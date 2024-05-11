@@ -434,11 +434,12 @@ class CT_Tc(BaseOxmlElement):
     tbl = OneOrMore("w:tbl")
 
     @property
-    def bottom(self) -> int:
-        """The row index that marks the bottom extent of the vertical span of this cell.
-
-        This is one greater than the index of the bottom-most row of the span, similar
-        to how a slice of the cell's rows would be specified.
+    def bottom(self):
+        """
+        The row index that marks the bottom extent of the vertical span of
+        this cell. This is one greater than the index of the bottom-most row
+        of the span, similar to how a slice of the cell's rows would be
+        specified.
         """
         if self.vMerge is not None:
             tc_below = self._tc_below
