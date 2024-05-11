@@ -131,14 +131,14 @@ class CT_Row(BaseOxmlElement):
         trPr.trHeight_val = value
 
     def _insert_tblPrEx(self, tblPrEx: CT_TblPrEx):
-        self.insert(0, tblPrEx)
+        self.insert(0, tblPrEx) # type: ignore
 
     def _insert_trPr(self, trPr: CT_TrPr):
         tblPrEx = self.tblPrEx
         if tblPrEx is not None:
-            tblPrEx.addnext(trPr)
+            tblPrEx.addnext(trPr) # type: ignore
         else:
-            self.insert(0, trPr)
+            self.insert(0, trPr) # type: ignore
 
     def _new_tc(self):
         return CT_Tc.new()
@@ -394,58 +394,58 @@ class CT_TblPr(BaseOxmlElement):
         self._add_tblStyle().val = value
 
     @property
-    def show_total_row(self):
-        return self.tblLook.show_total_row
+    def show_total_row(self) -> bool:
+        return self.tblLook.show_total_row # type: ignore
 
     @show_total_row.setter
-    def show_total_row(self, value):
+    def show_total_row(self, value: bool):
         tblLook = self.tblLook
-        tblLook.show_total_row = True if value else False
+        tblLook.show_total_row = True if value else False # type: ignore
 
     @property
-    def show_header_row(self):
-        return self.tblLook.show_header_row
+    def show_header_row(self) -> bool:
+        return self.tblLook.show_header_row # type: ignore
 
     @show_header_row.setter
-    def show_header_row(self, value):
+    def show_header_row(self, value: bool):
         tblLook = self.tblLook
-        tblLook.show_header_row = True if value else False
+        tblLook.show_header_row = True if value else False # type: ignore
 
     @property
-    def show_header_column(self):
-        return self.tblLook.show_header_column
+    def show_header_column(self) -> bool:
+        return self.tblLook.show_header_column # type: ignore
 
     @show_header_column.setter
-    def show_header_column(self, value):
+    def show_header_column(self, value: bool):
         tblLook = self.tblLook
-        tblLook.show_header_column = True if value else False
+        tblLook.show_header_column = True if value else False # type: ignore
 
     @property
-    def show_last_column(self):
-        return self.tblLook.show_last_column
+    def show_last_column(self) -> bool:
+        return self.tblLook.show_last_column # type: ignore
 
     @show_last_column.setter
-    def show_last_column(self, value):
+    def show_last_column(self, value: bool):
         tblLook = self.tblLook
-        tblLook.show_last_column = True if value else False
+        tblLook.show_last_column = True if value else False # type: ignore
 
     @property
-    def show_banded_rows(self):
-        return self.tblLook.show_banded_rows
+    def show_banded_rows(self) -> bool:
+        return self.tblLook.show_banded_rows # type: ignore
 
     @show_banded_rows.setter
-    def show_banded_rows(self, value):
+    def show_banded_rows(self, value: bool):
         tblLook = self.tblLook
-        tblLook.show_banded_rows = False if value else True
+        tblLook.show_banded_rows = False if value else True # type: ignore
 
     @property
-    def show_banded_columns(self):
-        return self.tblLook.show_banded_columns
+    def show_banded_columns(self) -> bool:
+        return self.tblLook.show_banded_columns # type: ignore
 
     @show_banded_columns.setter
-    def show_banded_columns(self, value):
+    def show_banded_columns(self, value: bool):
         tblLook = self.tblLook
-        tblLook.show_banded_columns = False if value else True
+        tblLook.show_banded_columns = False if value else True # type: ignore
 
 
 class CT_TblPrEx(BaseOxmlElement):
@@ -495,7 +495,7 @@ class CT_Tc(BaseOxmlElement):
     tbl = OneOrMore("w:tbl")
 
     @property
-    def bottom(self):
+    def bottom(self): # type: ignore
         """
         The row index that marks the bottom extent of the vertical span of
         this cell. This is one greater than the index of the bottom-most row
@@ -505,7 +505,7 @@ class CT_Tc(BaseOxmlElement):
         if self.vMerge is not None:
             tc_below = self._tc_below
             if tc_below is not None and tc_below.vMerge == ST_Merge.CONTINUE:
-                return tc_below.bottom
+                return tc_below.bottom # type: ignore
         return self._tr_idx + 1
 
     def clear_content(self):
@@ -517,7 +517,7 @@ class CT_Tc(BaseOxmlElement):
         """
         # -- remove all cell inner-content except a `w:tcPr` when present. --
         for e in self.xpath("./*[not(self::w:tcPr)]"):
-            self.remove(e)
+            self.remove(e) # type: ignore
 
     @property
     def grid_offset(self) -> int:
@@ -554,12 +554,12 @@ class CT_Tc(BaseOxmlElement):
         """
         return self.xpath("./w:p | ./w:tbl")
 
-    def iter_block_items(self):
+    def iter_block_items(self): # type: ignore
         """Generate a reference to each of the block-level content elements in this
         cell, in the order they appear."""
         block_item_tags = (qn("w:p"), qn("w:tbl"), qn("w:sdt"))
-        for child in self:
-            if child.tag in block_item_tags:
+        for child in self: # type: ignore
+            if child.tag in block_item_tags: # type: ignore
                 yield child
 
     @property
@@ -659,18 +659,18 @@ class CT_Tc(BaseOxmlElement):
         """Override default `._insert_tcPr()`."""
         # -- `tcPr`` has a large number of successors, but always comes first if it appears,
         # -- so just using insert(0, ...) rather than spelling out successors.
-        self.insert(0, tcPr)
+        self.insert(0, tcPr) # type: ignore
         return tcPr
 
     @property
     def _is_empty(self) -> bool:
         """True if this cell contains only a single empty `w:p` element."""
-        block_items = list(self.iter_block_items())
-        if len(block_items) > 1:
+        block_items = list(self.iter_block_items()) # type: ignore
+        if len(block_items) > 1: # type: ignore
             return False
         # -- cell must include at least one block item but can be a `w:tbl`, `w:sdt`,
         # -- `w:customXml` or a `w:p`
-        only_item = block_items[0]
+        only_item = block_items[0] # type: ignore
         if isinstance(only_item, CT_P) and len(only_item.r_lst) == 0:
             return True
         return False
@@ -686,10 +686,10 @@ class CT_Tc(BaseOxmlElement):
             return
         other_tc._remove_trailing_empty_p()
         # -- appending moves each element from self to other_tc --
-        for block_element in self.iter_block_items():
-            other_tc.append(block_element)
+        for block_element in self.iter_block_items(): # type: ignore
+            other_tc.append(block_element) # type: ignore
         # -- add back the required minimum single empty <w:p> element --
-        self.append(self._new_p())
+        self.append(self._new_p()) # type: ignore
 
     def _new_tbl(self) -> None:
         raise NotImplementedError(
@@ -711,14 +711,14 @@ class CT_Tc(BaseOxmlElement):
 
     def _remove_trailing_empty_p(self):
         """Remove last content element from this cell if it's an empty `w:p` element."""
-        block_items = list(self.iter_block_items())
-        last_content_elm = block_items[-1]
+        block_items = list(self.iter_block_items()) # type: ignore
+        last_content_elm = block_items[-1] # type: ignore
         if not isinstance(last_content_elm, CT_P):
             return
         p = last_content_elm
         if len(p.r_lst) > 0:
             return
-        self.remove(p)
+        self.remove(p) # type: ignore
 
     def _span_dimensions(self, other_tc: CT_Tc) -> tuple[int, int, int, int]:
         """Return a (top, left, height, width) 4-tuple specifying the extents of the
@@ -726,14 +726,14 @@ class CT_Tc(BaseOxmlElement):
         extents."""
 
         def raise_on_inverted_L(a: CT_Tc, b: CT_Tc):
-            if a.top == b.top and a.bottom != b.bottom:
+            if a.top == b.top and a.bottom != b.bottom: # type: ignore
                 raise InvalidSpanError("requested span not rectangular")
             if a.left == b.left and a.right != b.right:
                 raise InvalidSpanError("requested span not rectangular")
 
         def raise_on_tee_shaped(a: CT_Tc, b: CT_Tc):
             top_most, other = (a, b) if a.top < b.top else (b, a)
-            if top_most.top < other.top and top_most.bottom > other.bottom:
+            if top_most.top < other.top and top_most.bottom > other.bottom: # type: ignore
                 raise InvalidSpanError("requested span not rectangular")
 
             left_most, other = (a, b) if a.left < b.left else (b, a)
@@ -745,10 +745,10 @@ class CT_Tc(BaseOxmlElement):
 
         top = min(self.top, other_tc.top)
         left = min(self.left, other_tc.left)
-        bottom = max(self.bottom, other_tc.bottom)
+        bottom = max(self.bottom, other_tc.bottom) # type: ignore
         right = max(self.right, other_tc.right)
 
-        return top, left, bottom - top, right - left
+        return top, left, bottom - top, right - left # type: ignore
 
     def _span_to_width(self, grid_width: int, top_tc: CT_Tc, vMerge: str | None):
         """Incorporate `w:tc` elements to the right until this cell spans `grid_width`.
@@ -1037,3 +1037,12 @@ class CT_VMerge(BaseOxmlElement):
     val: str | None = OptionalAttribute(  # pyright: ignore[reportAssignmentType]
         "w:val", ST_Merge, default=ST_Merge.CONTINUE
     )
+
+
+class CT_TblLook(BaseOxmlElement):
+    show_total_row = RequiredAttribute('w:lastRow', ST_OnOff)
+    show_header_row = RequiredAttribute('w:firstRow', ST_OnOff)
+    show_header_column = RequiredAttribute('w:firstColumn', ST_OnOff)
+    show_last_column = RequiredAttribute('w:lastColumn', ST_OnOff)
+    show_banded_rows = RequiredAttribute('w:noHBand', ST_OnOff)
+    show_banded_columns = RequiredAttribute('w:noVBand', ST_OnOff)

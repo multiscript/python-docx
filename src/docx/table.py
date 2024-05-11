@@ -161,7 +161,7 @@ class Table(StoryChild):
         self._element.bidiVisual_val = value
 
     @property
-    def show_total_row(self):
+    def show_total_row(self) -> bool:
         """
         |True| is the table should display the last row as
         the Total Row.
@@ -169,11 +169,11 @@ class Table(StoryChild):
         return self._tblPr.show_total_row
 
     @show_total_row.setter
-    def show_total_row(self, value):
+    def show_total_row(self, value: bool):
         self._tblPr.show_total_row = value
 
     @property
-    def show_header_row(self):
+    def show_header_row(self) -> bool:
         """
         |True| is the table should display the first row as
         the Header Row.
@@ -181,11 +181,11 @@ class Table(StoryChild):
         return self._tblPr.show_header_row
 
     @show_header_row.setter
-    def show_header_row(self, value):
+    def show_header_row(self, value: bool):
         self._tblPr.show_header_row = value
 
     @property
-    def show_header_column(self):
+    def show_header_column(self) -> bool:
         """
         |True| is the table should display the first column as
         the Header Column.
@@ -193,11 +193,11 @@ class Table(StoryChild):
         return self._tblPr.show_header_column
 
     @show_header_column.setter
-    def show_header_column(self, value):
+    def show_header_column(self, value: bool):
         self._tblPr.show_header_column = value
 
     @property
-    def show_last_column(self):
+    def show_last_column(self) -> bool:
         """
         |True| is the table should display the last column as
         with the Table Style formatting
@@ -205,29 +205,29 @@ class Table(StoryChild):
         return self._tblPr.show_last_column
 
     @show_last_column.setter
-    def show_last_column(self, value):
+    def show_last_column(self, value: bool):
         self._tblPr.show_last_column = value
 
     @property
-    def show_banded_rows(self):
+    def show_banded_rows(self) -> bool:
         """
         |True| is the table should display banded rows
         """
         return self._tblPr.show_banded_rows
 
     @show_banded_rows.setter
-    def show_banded_rows(self, value):
+    def show_banded_rows(self, value: bool):
         self._tblPr.show_banded_rows = value
 
     @property
-    def show_banded_columns(self):
+    def show_banded_columns(self) -> bool:
         """
         |True| is the table should display banded columns
         """
         return self._tblPr.show_banded_columns
 
     @show_banded_columns.setter
-    def show_banded_columns(self, value):
+    def show_banded_columns(self, value: bool):
         self._tblPr.show_banded_columns = value
 
     @property
