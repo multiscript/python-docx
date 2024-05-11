@@ -15,6 +15,7 @@ from docx.oxml.simpletypes import (
     ST_TblWidth,
     ST_TwipsMeasure,
     XsdInt,
+    ST_OnOff
 )
 from docx.oxml.text.paragraph import CT_P
 from docx.oxml.xmlchemy import (
@@ -223,10 +224,15 @@ class CT_Tbl(BaseOxmlElement):
             f"<w:tbl {nsdecls('w')}>\n"
             f"  <w:tblPr>\n"
             f'    <w:tblW w:type="auto" w:w="0"/>\n'
-            f'    <w:tblLook w:firstColumn="1" w:firstRow="1"\n'
-            f'               w:lastColumn="0" w:lastRow="0" w:noHBand="0"\n'
-            f'               w:noVBand="1" w:val="04A0"/>\n'
-            f"  </w:tblPr>\n"
+            '    <w:tblLook'
+            '      w:firstColumn="true"'
+            '      w:firstRow="true"'
+            '      w:lastColumn="true"'
+            '      w:lastRow="true"'
+            '      w:noHBand="true"'
+            '      w:noVBand="true"'
+            '    />'
+            '  </w:tblPr>\n'
             f"{cls._tblGrid_xml(cols, col_width)}"
             f"{cls._trs_xml(rows, cols, col_width)}"
             f"</w:tbl>\n"
@@ -338,6 +344,7 @@ class CT_TblPr(BaseOxmlElement):
     tblLayout: CT_TblLayoutType | None = ZeroOrOne(  # pyright: ignore[reportAssignmentType]
         "w:tblLayout", successors=_tag_seq[13:]
     )
+    tblLook = OneAndOnlyOne('w:tblLook')
     del _tag_seq
 
     @property
@@ -385,6 +392,60 @@ class CT_TblPr(BaseOxmlElement):
         if value is None:
             return
         self._add_tblStyle().val = value
+
+    @property
+    def show_total_row(self):
+        return self.tblLook.show_total_row
+
+    @show_total_row.setter
+    def show_total_row(self, value):
+        tblLook = self.tblLook
+        tblLook.show_total_row = True if value else False
+
+    @property
+    def show_header_row(self):
+        return self.tblLook.show_header_row
+
+    @show_header_row.setter
+    def show_header_row(self, value):
+        tblLook = self.tblLook
+        tblLook.show_header_row = True if value else False
+
+    @property
+    def show_header_column(self):
+        return self.tblLook.show_header_column
+
+    @show_header_column.setter
+    def show_header_column(self, value):
+        tblLook = self.tblLook
+        tblLook.show_header_column = True if value else False
+
+    @property
+    def show_last_column(self):
+        return self.tblLook.show_last_column
+
+    @show_last_column.setter
+    def show_last_column(self, value):
+        tblLook = self.tblLook
+        tblLook.show_last_column = True if value else False
+
+    @property
+    def show_banded_rows(self):
+        return self.tblLook.show_banded_rows
+
+    @show_banded_rows.setter
+    def show_banded_rows(self, value):
+        tblLook = self.tblLook
+        tblLook.show_banded_rows = False if value else True
+
+    @property
+    def show_banded_columns(self):
+        return self.tblLook.show_banded_columns
+
+    @show_banded_columns.setter
+    def show_banded_columns(self, value):
+        tblLook = self.tblLook
+        tblLook.show_banded_columns = False if value else True
 
 
 class CT_TblPrEx(BaseOxmlElement):

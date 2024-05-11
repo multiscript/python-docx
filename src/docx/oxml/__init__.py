@@ -148,6 +148,7 @@ from .table import (  # noqa
     CT_TblGrid,
     CT_TblGridCol,
     CT_TblLayoutType,
+    CT_TblLook,
     CT_TblPr,
     CT_TblPrEx,
     CT_TblWidth,
@@ -177,6 +178,7 @@ register_element_cls("w:trHeight", CT_Height)
 register_element_cls("w:trPr", CT_TrPr)
 register_element_cls("w:vAlign", CT_VerticalJc)
 register_element_cls("w:vMerge", CT_VMerge)
+register_element_cls('w:tblLook', CT_TblLook)
 
 from .text.font import (  # noqa
     CT_Color,
