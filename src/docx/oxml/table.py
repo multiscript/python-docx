@@ -131,14 +131,14 @@ class CT_Row(BaseOxmlElement):
         trPr.trHeight_val = value
 
     def _insert_tblPrEx(self, tblPrEx: CT_TblPrEx):
-        self.insert(0, tblPrEx) # type: ignore
+        self.insert(0, tblPrEx)
 
     def _insert_trPr(self, trPr: CT_TrPr):
         tblPrEx = self.tblPrEx
         if tblPrEx is not None:
-            tblPrEx.addnext(trPr) # type: ignore
+            tblPrEx.addnext(trPr)
         else:
-            self.insert(0, trPr) # type: ignore
+            self.insert(0, trPr)
 
     def _new_tc(self):
         return CT_Tc.new()
@@ -512,7 +512,7 @@ class CT_Tc(BaseOxmlElement):
         """
         # -- remove all cell inner-content except a `w:tcPr` when present. --
         for e in self.xpath("./*[not(self::w:tcPr)]"):
-            self.remove(e) # type: ignore
+            self.remove(e)
 
     @property
     def grid_offset(self) -> int:
@@ -549,12 +549,12 @@ class CT_Tc(BaseOxmlElement):
         """
         return self.xpath("./w:p | ./w:tbl")
 
-    def iter_block_items(self): # type: ignore
+    def iter_block_items(self):
         """Generate a reference to each of the block-level content elements in this
         cell, in the order they appear."""
         block_item_tags = (qn("w:p"), qn("w:tbl"), qn("w:sdt"))
-        for child in self: # type: ignore
-            if child.tag in block_item_tags: # type: ignore
+        for child in self:
+            if child.tag in block_item_tags:
                 yield child
 
     @property
@@ -656,14 +656,14 @@ class CT_Tc(BaseOxmlElement):
         """Override default `._insert_tcPr()`."""
         # -- `tcPr`` has a large number of successors, but always comes first if it appears,
         # -- so just using insert(0, ...) rather than spelling out successors.
-        self.insert(0, tcPr) # type: ignore
+        self.insert(0, tcPr)
         return tcPr
 
     @property
     def _is_empty(self) -> bool:
         """True if this cell contains only a single empty `w:p` element."""
-        block_items = list(self.iter_block_items()) # type: ignore
-        if len(block_items) > 1: # type: ignore
+        block_items = list(self.iter_block_items())
+        if len(block_items) > 1:
             return False
         # -- cell must include at least one block item but can be a `w:tbl`, `w:sdt`,
         # -- `w:customXml` or a `w:p`
@@ -681,10 +681,10 @@ class CT_Tc(BaseOxmlElement):
             return
         other_tc._remove_trailing_empty_p()
         # -- appending moves each element from self to other_tc --
-        for block_element in self.iter_block_items(): # type: ignore
-            other_tc.append(block_element) # type: ignore
+        for block_element in self.iter_block_items():
+            other_tc.append(block_element)
         # -- add back the required minimum single empty <w:p> element --
-        self.append(self._new_p()) # type: ignore
+        self.append(self._new_p())
 
     def _new_tbl(self) -> None:
         raise NotImplementedError(
@@ -706,14 +706,14 @@ class CT_Tc(BaseOxmlElement):
 
     def _remove_trailing_empty_p(self):
         """Remove last content element from this cell if it's an empty `w:p` element."""
-        block_items = list(self.iter_block_items()) # type: ignore
-        last_content_elm = block_items[-1] # type: ignore
+        block_items = list(self.iter_block_items())
+        last_content_elm = block_items[-1]
         if not isinstance(last_content_elm, CT_P):
             return
         p = last_content_elm
         if len(p.r_lst) > 0:
             return
-        self.remove(p) # type: ignore
+        self.remove(p)
 
     def _span_dimensions(self, other_tc: CT_Tc) -> tuple[int, int, int, int]:
         """Return a (top, left, height, width) 4-tuple specifying the extents of the
