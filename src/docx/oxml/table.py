@@ -224,9 +224,9 @@ class CT_Tbl(BaseOxmlElement):
             f"<w:tbl {nsdecls('w')}>\n"
             f"  <w:tblPr>\n"
             f'    <w:tblW w:type="auto" w:w="0"/>\n'
-            f'     <w:tblLook w:firstColumn="1" w:firstRow="1"\n'
-            f'                w:lastColumn="0" w:lastRow="0" w:noHBand="0"\n'
-            f'                w:noVBand="1" w:val="04A0"/>\n'
+            f'    <w:tblLook w:firstColumn="1" w:firstRow="1"\n'
+            f'               w:lastColumn="0" w:lastRow="0" w:noHBand="0"\n'
+            f'               w:noVBand="1" w:val="04A0"/>\n'
             f'  </w:tblPr>\n'
             f"{cls._tblGrid_xml(cols, col_width)}"
             f"{cls._trs_xml(rows, cols, col_width)}"
